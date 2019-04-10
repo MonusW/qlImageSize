@@ -107,12 +107,12 @@ CF_RETURNS_RETAINED static CFDictionaryRef _create_properties(CFURLRef url, cons
 {
 	// Format file size
 	NSString* fmt = nil;
-	if (size > 1048576) // More than 1Mb
-		fmt = [[NSString alloc] initWithFormat:@"%.1fMb", (float)((float)size / 1048576.0f)];
-	else if ((size < 1048576) && (size > 1024)) // 1Kb - 1Mb
-		fmt = [[NSString alloc] initWithFormat:@"%.2fKb", (float)((float)size / 1024.0f)];
-	else // Less than 1Kb
-		fmt = [[NSString alloc] initWithFormat:@"%zub", size];
+	if (size > 1048576) // More than 1MB
+		fmt = [[NSString alloc] initWithFormat:@"%.1fMB", (float)((float)size / 1048576.0f)];
+	else if ((size < 1048576) && (size > 1024)) // 1KB - 1MB
+		fmt = [[NSString alloc] initWithFormat:@"%.2fKB", (float)((float)size / 1024.0f)];
+	else // Less than 1KB
+		fmt = [[NSString alloc] initWithFormat:@"%zuB", size];
 
 	// Get filename
 	CFStringRef filename = CFURLCopyLastPathComponent(url);
@@ -122,7 +122,7 @@ CF_RETURNS_RETAINED static CFDictionaryRef _create_properties(CFURLRef url, cons
 	if (b)
 	{
 		CFTypeRef keys[3] = {kQLPreviewPropertyDisplayNameKey, kQLPreviewPropertyWidthKey, kQLPreviewPropertyHeightKey};
-		// WIDTH×HEIGHTpx • 25.01Kb • filename
+		// WIDTH×HEIGHTpx • 25.01KB • filename
 		CFStringRef title = dpi > 0 ? CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("%d×%dpx (%ddpi) • %@ • %@"), (int)width, (int)height, (int)dpi, fmt, filename) : CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("%d×%dpx • %@ • %@"), (int)width, (int)height, fmt, filename);
 		CFTypeRef values[3] = {title, CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt64Type, &width), CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt64Type, &height)};
 		properties = CFDictionaryCreate(kCFAllocatorDefault, (const void**)keys, (const void**)values, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -133,7 +133,7 @@ CF_RETURNS_RETAINED static CFDictionaryRef _create_properties(CFURLRef url, cons
 	else
 	{
 		CFTypeRef keys[1] = {kQLPreviewPropertyDisplayNameKey};
-		// WIDTH×HEIGHTpx • 25.01Kb • filename
+		// WIDTH×HEIGHTpx • 25.01KB • filename
 		CFStringRef title = dpi > 0 ? CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("%d×%dpx (%ddpi) • %@ • %@"), (int)width, (int)height, (int)dpi, fmt, filename) : CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("%d×%dpx • %@ • %@"), (int)width, (int)height, fmt, filename);
 		CFTypeRef values[1] = {title};
 		properties = CFDictionaryCreate(kCFAllocatorDefault, (const void**)keys, (const void**)values, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
