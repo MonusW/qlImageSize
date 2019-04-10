@@ -107,12 +107,18 @@ CF_RETURNS_RETAINED static CFDictionaryRef _create_properties(CFURLRef url, cons
 {
 	// Format file size
 	NSString* fmt = nil;
-	if (size > 1048576) // More than 1MB
-		fmt = [[NSString alloc] initWithFormat:@"%.1fMB", (float)((float)size / 1048576.0f)];
-	else if ((size < 1048576) && (size > 1024)) // 1KB - 1MB
-		fmt = [[NSString alloc] initWithFormat:@"%.2fKB", (float)((float)size / 1024.0f)];
-	else // Less than 1KB
-		fmt = [[NSString alloc] initWithFormat:@"%zuB", size];
+//    if (size > 1048576) // More than 1MB
+//        fmt = [[NSString alloc] initWithFormat:@"%.1fMB", (float)((float)size / 1048576.0f)];
+//    else if ((size < 1048576) && (size > 1024)) // 1KB - 1MB
+//        fmt = [[NSString alloc] initWithFormat:@"%.2fKB", (float)((float)size / 1024.0f)];
+//    else // Less than 1KB
+//        fmt = [[NSString alloc] initWithFormat:@"%zuB", size];
+    if (size > 1000000) // More than 1MB
+        fmt = [[NSString alloc] initWithFormat:@"%.1fMB", (float)((float)size / 1000000.0f)];
+    else if ((size < 1000000) && (size > 1000)) // 1KB - 1MB
+        fmt = [[NSString alloc] initWithFormat:@"%.2fKB", (float)((float)size / 1000.0f)];
+    else // Less than 1KB
+        fmt = [[NSString alloc] initWithFormat:@"%zuB", size];
 
 	// Get filename
 	CFStringRef filename = CFURLCopyLastPathComponent(url);
